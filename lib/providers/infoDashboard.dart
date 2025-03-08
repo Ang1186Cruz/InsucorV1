@@ -8,24 +8,25 @@ class ListDashboard {
   final String date, customer, invoice, status, transportista;
   final double? import, cheques, total;
 
-  ListDashboard(
-      {this.date = '',
-      this.customer = '',
-      this.invoice = '',
-      this.status = '',
-      this.import,
-      this.cheques,
-      this.total,
-      this.transportista = ''});
+  ListDashboard({
+    this.date = '',
+    this.customer = '',
+    this.invoice = '',
+    this.status = '',
+    this.import,
+    this.cheques,
+    this.total,
+    this.transportista = '',
+  });
 
   factory ListDashboard.fromJson(Map<String, dynamic> parseJson) {
     return ListDashboard(
-      date: parseJson['fecha'],
-      customer: parseJson['nombre'],
-      invoice: parseJson['factura'],
-      status: parseJson['status'],
+      date: parseJson['fecha'] ?? '',
+      customer: parseJson['nombre'] ?? '',
+      invoice: parseJson['factura'] ?? '',
+      status: parseJson['status'] ?? '',
       import: double.parse(parseJson['importe'] ?? "0"),
-      transportista: parseJson['transportista'],
+      transportista: parseJson['transportista'] ?? '',
       cheques: double.parse(parseJson['cheques'] ?? "0"),
       total: double.parse(parseJson['total'] ?? "0"),
     );
@@ -51,14 +52,15 @@ class RouterInfo {
 
   factory RouterInfo.fromJson(Map<String, dynamic> parseJson) {
     return RouterInfo(
-        title: parseJson['title'],
-        totaltarea: int.parse(parseJson['totalTarea'] ?? "0"),
-        svgSrc: "assets/icons/Documents.svg",
-        cantidadCliente: parseJson['cantidadCliente'],
-        tabla: parseJson['tabla'],
-        color: (parseJson['isPrimary'] == "1") ? primaryColor : Colors.red,
-        percentage: int.parse(parseJson['porcentaje'] ?? "0"),
-        total: double.parse(parseJson['total'] ?? "0"));
+      title: parseJson['title'] ?? '',
+      totaltarea: int.parse(parseJson['totalTarea'] ?? "0"),
+      svgSrc: "assets/icons/Documents.svg",
+      cantidadCliente: parseJson['cantidadCliente'] ?? '',
+      tabla: parseJson['tabla'] ?? '',
+      color: (parseJson['isPrimary'] == "1") ? primaryColor : Colors.red,
+      percentage: int.parse(parseJson['porcentaje'] ?? "0"),
+      total: double.parse(parseJson['total'] ?? "0"),
+    );
   }
 }
 
@@ -74,23 +76,24 @@ class InfoListDashboard with ChangeNotifier {
   Future<void> fetchAndSetListsDashboard() async {
     final urlRouter =
         'https://distribuidorainsucor.com/APP_Api/api/listadoDashboard.php?idUser=' +
-            this.userId +
-            '&idRol=' +
-            this.rolId +
-            '&isdetalle=0';
+        this.userId +
+        '&idRol=' +
+        this.rolId +
+        '&isdetalle=0';
 
     final urlListDashboard =
         'https://distribuidorainsucor.com/APP_Api/api/listadoDashboard.php?idUser=' +
-            this.userId +
-            '&idRol=' +
-            this.rolId +
-            '&isdetalle=1';
+        this.userId +
+        '&idRol=' +
+        this.rolId +
+        '&isdetalle=1';
 
     try {
       final response1 = await http.get(Uri.parse(urlRouter));
-      List<RouterInfo> listaAxiliar = (json.decode(response1.body) as List)
-          .map((e) => new RouterInfo.fromJson(e))
-          .toList();
+      List<RouterInfo> listaAxiliar =
+          (json.decode(response1.body) as List)
+              .map((e) => new RouterInfo.fromJson(e))
+              .toList();
       listRouterInfo =
           listaAxiliar.where((element) => element.tabla != "Rutas").toList();
       listRutasAdminInfo =

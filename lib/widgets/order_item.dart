@@ -145,7 +145,7 @@ class _OrderItemState extends State<OrderItem> {
                             Icons.share,
                             color:
                                 (auth.operation == 'entrega')
-                                    ? Colors.white
+                                    ? const Color.fromARGB(255, 247, 242, 250)
                                     : Colors.blue,
                           ),
                           onPressed: () {
