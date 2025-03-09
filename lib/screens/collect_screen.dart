@@ -93,45 +93,47 @@ class _CollectScreenState extends State<CollectScreen> {
         ),
         body: new SingleChildScrollView(
           child: new Container(
-              child: _isLoading
-                  ? Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : Padding(
+            child:
+                _isLoading
+                    ? Center(child: CircularProgressIndicator())
+                    : Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: new Form(
                         key: keyForm,
                         child: Column(
                           children: [
                             Title(
-                                color: Colors.amber,
-                                child: Text(
-                                  "Nombre Cliente \n" +
-                                      customers.customerActive!.nombre,
-                                  style: TextStyle(color: Colors.black),
-                                )),
+                              color: Colors.amber,
+                              child: Text(
+                                "Nombre Cliente \n" +
+                                    customers.customerActive!.nombre,
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            ),
                             formItemsDesign(
                               DropdownButtonFormField(
                                 disabledHint: Text(_numFactura),
                                 value: _numFactura,
                                 isExpanded: true,
-                                onChanged: (this.nroComprobante != '')
-                                    ? null
-                                    : (String? value) {
-                                        setState(() {
-                                          _numFactura = value ?? '';
-                                        });
-                                      },
-                                items: customers
-                                    .customerActive!.facturadropdownItems
-                                    .map((String val) {
-                                  return DropdownMenuItem(
-                                    value: val,
-                                    child: Text(
-                                      val,
-                                    ),
-                                  );
-                                }).toList(),
+                                onChanged:
+                                    (this.nroComprobante != '')
+                                        ? null
+                                        : (String? value) {
+                                          setState(() {
+                                            _numFactura = value ?? '';
+                                          });
+                                        },
+                                items:
+                                    customers
+                                        .customerActive!
+                                        .facturadropdownItems
+                                        .map((String val) {
+                                          return DropdownMenuItem(
+                                            value: val,
+                                            child: Text(val),
+                                          );
+                                        })
+                                        .toList(),
                               ),
                             ),
                             Row(
@@ -140,8 +142,10 @@ class _CollectScreenState extends State<CollectScreen> {
                                   fit: FlexFit.loose,
                                   child: new Column(
                                     children: <Widget>[
-                                      new Text("EFECTIVO ",
-                                          textAlign: TextAlign.center),
+                                      new Text(
+                                        "EFECTIVO ",
+                                        textAlign: TextAlign.center,
+                                      ),
                                       formEfectivo(),
                                     ],
                                   ),
@@ -151,8 +155,10 @@ class _CollectScreenState extends State<CollectScreen> {
                                   fit: FlexFit.tight,
                                   child: new Column(
                                     children: <Widget>[
-                                      new Text("CHEQUES ",
-                                          textAlign: TextAlign.center),
+                                      new Text(
+                                        "CHEQUES ",
+                                        textAlign: TextAlign.center,
+                                      ),
                                       formUIcheques(numero1, importe1),
                                       formUIcheques(numero2, importe2),
                                       formUIcheques(numero3, importe3),
@@ -179,10 +185,10 @@ class _CollectScreenState extends State<CollectScreen> {
                           ],
                         ),
                       ),
-                    )
-              //     }
-              // }
-              ),
+                    ),
+            //     }
+            // }
+          ),
         ),
       ),
     );
@@ -198,76 +204,96 @@ class _CollectScreenState extends State<CollectScreen> {
   Widget formFooter() {
     return Column(
       children: <Widget>[
-        formItemsDesign(TextFormField(
+        formItemsDesign(
+          TextFormField(
             decoration: InputDecoration(labelText: "Importe en Dolar"),
             controller: iDolar,
             inputFormatters: <TextInputFormatter>[
-              FilteringTextInputFormatter.digitsOnly
+              FilteringTextInputFormatter.digitsOnly,
             ],
-            onChanged: (String value) {
-              setState(() {
-                recalcularEfectivo();
-              });
-            })),
-        formItemsDesign(TextFormField(
+            // onChanged: (String value) {
+            //   setState(() {
+            //     recalcularEfectivo();
+            //   });
+            // },
+          ),
+        ),
+        formItemsDesign(
+          TextFormField(
             decoration: InputDecoration(labelText: "Importe Recibido"),
             controller: iRecibido,
             inputFormatters: <TextInputFormatter>[
-              FilteringTextInputFormatter.digitsOnly
+              FilteringTextInputFormatter.digitsOnly,
             ],
             onChanged: (String value) {
               setState(() {
                 recalcularEfectivo();
               });
-            })),
-        formItemsDesign(TextFormField(
-          readOnly: true,
-          decoration: InputDecoration(labelText: "Total Efectivo"),
-          controller: tEfectivo,
-        )),
-        formItemsDesign(TextFormField(
-          readOnly: true,
-          decoration: InputDecoration(labelText: "Total Cheques"),
-          controller: tCheque,
-        )),
-        formItemsDesign(TextFormField(
-          readOnly: true,
-          decoration: InputDecoration(labelText: "Total Recibido"),
-          controller: tRecibido,
-          validator: validateName,
-        )),
-        formItemsDesign(CheckboxListTile(
-          title: Text('MONTO NO CONTROLADO'),
-          value: notControl,
-          onChanged: (bool? newValue) {
-            setState(() {
-              notControl = newValue ?? false;
-            });
-          },
-        )),
-        GestureDetector(
-            onTap: () {
-              save();
             },
-            child: Container(
-              margin: new EdgeInsets.all(30.0),
-              alignment: Alignment.center,
-              decoration: ShapeDecoration(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0)),
-                gradient: LinearGradient(colors: [
-                  Colors.blue
-                  // Color.fromARGB(255, 45, 144, 251),
-                  // Color(0xFFF9A825),
-                ], begin: Alignment.topLeft, end: Alignment.bottomRight),
+          ),
+        ),
+        formItemsDesign(
+          TextFormField(
+            readOnly: true,
+            decoration: InputDecoration(labelText: "Total Efectivo"),
+            controller: tEfectivo,
+          ),
+        ),
+        formItemsDesign(
+          TextFormField(
+            readOnly: true,
+            decoration: InputDecoration(labelText: "Total Cheques"),
+            controller: tCheque,
+          ),
+        ),
+        formItemsDesign(
+          TextFormField(
+            readOnly: true,
+            decoration: InputDecoration(labelText: "Total Recibido"),
+            controller: tRecibido,
+            validator: validateName,
+          ),
+        ),
+        formItemsDesign(
+          CheckboxListTile(
+            title: Text('MONTO NO CONTROLADO'),
+            value: notControl,
+            onChanged: (bool? newValue) {
+              setState(() {
+                notControl = newValue ?? false;
+              });
+            },
+          ),
+        ),
+        GestureDetector(
+          onTap: () {
+            save();
+          },
+          child: Container(
+            margin: new EdgeInsets.all(30.0),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: Colors.blue, // Color sólido azul
+              borderRadius: BorderRadius.circular(30.0),
+            ),
+            // decoration: ShapeDecoration(
+            //   shape: RoundedRectangleBorder(
+            //       borderRadius: BorderRadius.circular(30.0)),
+            //   gradient: LinearGradient(colors: [
+            //     Colors.blue
+            //   ], begin: Alignment.topLeft, end: Alignment.bottomRight),
+            // ),
+            child: Text(
+              "Guardar",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
               ),
-              child: Text("Guardar",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500)),
-              padding: EdgeInsets.only(top: 16, bottom: 16),
-            ))
+            ),
+            padding: EdgeInsets.only(top: 16, bottom: 16),
+          ),
+        ),
       ],
     );
   }
@@ -276,125 +302,135 @@ class _CollectScreenState extends State<CollectScreen> {
     return Column(
       children: <Widget>[
         TextField(
-            decoration: InputDecoration(labelText: "\$ 20000"),
-            controller: eveinteMil,
-            keyboardType: TextInputType.number,
-            inputFormatters: <TextInputFormatter>[
-              FilteringTextInputFormatter.digitsOnly
-            ],
-            onChanged: (String value) {
-              setState(() {
-                recalcularEfectivo();
-              });
-            }),
+          decoration: InputDecoration(labelText: "\$ 20000"),
+          controller: eveinteMil,
+          keyboardType: TextInputType.number,
+          inputFormatters: <TextInputFormatter>[
+            FilteringTextInputFormatter.digitsOnly,
+          ],
+          onChanged: (String value) {
+            setState(() {
+              recalcularEfectivo();
+            });
+          },
+        ),
         TextField(
-            decoration: InputDecoration(labelText: "\$ 10000"),
-            controller: ediezMil,
-            keyboardType: TextInputType.number,
-            inputFormatters: <TextInputFormatter>[
-              FilteringTextInputFormatter.digitsOnly
-            ],
-            onChanged: (String value) {
-              setState(() {
-                recalcularEfectivo();
-              });
-            }),
+          decoration: InputDecoration(labelText: "\$ 10000"),
+          controller: ediezMil,
+          keyboardType: TextInputType.number,
+          inputFormatters: <TextInputFormatter>[
+            FilteringTextInputFormatter.digitsOnly,
+          ],
+          onChanged: (String value) {
+            setState(() {
+              recalcularEfectivo();
+            });
+          },
+        ),
         TextField(
-            decoration: InputDecoration(labelText: "\$ 2000"),
-            controller: edosMil,
-            keyboardType: TextInputType.number,
-            inputFormatters: <TextInputFormatter>[
-              FilteringTextInputFormatter.digitsOnly
-            ],
-            onChanged: (String value) {
-              setState(() {
-                recalcularEfectivo();
-              });
-            }),
+          decoration: InputDecoration(labelText: "\$ 2000"),
+          controller: edosMil,
+          keyboardType: TextInputType.number,
+          inputFormatters: <TextInputFormatter>[
+            FilteringTextInputFormatter.digitsOnly,
+          ],
+          onChanged: (String value) {
+            setState(() {
+              recalcularEfectivo();
+            });
+          },
+        ),
         TextField(
-            decoration: InputDecoration(labelText: "\$ 1000"),
-            controller: eMil,
-            keyboardType: TextInputType.number,
-            inputFormatters: <TextInputFormatter>[
-              FilteringTextInputFormatter.digitsOnly
-            ],
-            onChanged: (String value) {
-              setState(() {
-                recalcularEfectivo();
-              });
-            }),
+          decoration: InputDecoration(labelText: "\$ 1000"),
+          controller: eMil,
+          keyboardType: TextInputType.number,
+          inputFormatters: <TextInputFormatter>[
+            FilteringTextInputFormatter.digitsOnly,
+          ],
+          onChanged: (String value) {
+            setState(() {
+              recalcularEfectivo();
+            });
+          },
+        ),
         TextFormField(
-            decoration: InputDecoration(labelText: "\$ 500"),
-            controller: eQuinientos,
-            keyboardType: TextInputType.number,
-            inputFormatters: <TextInputFormatter>[
-              FilteringTextInputFormatter.digitsOnly
-            ],
-            onChanged: (String value) {
-              setState(() {
-                recalcularEfectivo();
-              });
-            }),
+          decoration: InputDecoration(labelText: "\$ 500"),
+          controller: eQuinientos,
+          keyboardType: TextInputType.number,
+          inputFormatters: <TextInputFormatter>[
+            FilteringTextInputFormatter.digitsOnly,
+          ],
+          onChanged: (String value) {
+            setState(() {
+              recalcularEfectivo();
+            });
+          },
+        ),
         TextFormField(
-            decoration: InputDecoration(labelText: "\$ 200"),
-            controller: eDocientos,
-            keyboardType: TextInputType.number,
-            inputFormatters: <TextInputFormatter>[
-              FilteringTextInputFormatter.digitsOnly
-            ],
-            onChanged: (String value) {
-              setState(() {
-                recalcularEfectivo();
-              });
-            }),
+          decoration: InputDecoration(labelText: "\$ 200"),
+          controller: eDocientos,
+          keyboardType: TextInputType.number,
+          inputFormatters: <TextInputFormatter>[
+            FilteringTextInputFormatter.digitsOnly,
+          ],
+          onChanged: (String value) {
+            setState(() {
+              recalcularEfectivo();
+            });
+          },
+        ),
         TextFormField(
-            decoration: InputDecoration(labelText: "\$ 100"),
-            controller: eCien,
-            keyboardType: TextInputType.number,
-            inputFormatters: <TextInputFormatter>[
-              FilteringTextInputFormatter.digitsOnly
-            ],
-            onChanged: (String value) {
-              setState(() {
-                recalcularEfectivo();
-              });
-            }),
+          decoration: InputDecoration(labelText: "\$ 100"),
+          controller: eCien,
+          keyboardType: TextInputType.number,
+          inputFormatters: <TextInputFormatter>[
+            FilteringTextInputFormatter.digitsOnly,
+          ],
+          onChanged: (String value) {
+            setState(() {
+              recalcularEfectivo();
+            });
+          },
+        ),
         TextFormField(
-            decoration: InputDecoration(labelText: "\$ 50"),
-            controller: eCincuenta,
-            keyboardType: TextInputType.number,
-            inputFormatters: <TextInputFormatter>[
-              FilteringTextInputFormatter.digitsOnly
-            ],
-            onChanged: (String value) {
-              setState(() {
-                recalcularEfectivo();
-              });
-            }),
+          decoration: InputDecoration(labelText: "\$ 50"),
+          controller: eCincuenta,
+          keyboardType: TextInputType.number,
+          inputFormatters: <TextInputFormatter>[
+            FilteringTextInputFormatter.digitsOnly,
+          ],
+          onChanged: (String value) {
+            setState(() {
+              recalcularEfectivo();
+            });
+          },
+        ),
         TextFormField(
-            decoration: InputDecoration(labelText: "\$ 20"),
-            controller: eVeinte,
-            keyboardType: TextInputType.number,
-            inputFormatters: <TextInputFormatter>[
-              FilteringTextInputFormatter.digitsOnly
-            ],
-            onChanged: (String value) {
-              setState(() {
-                recalcularEfectivo();
-              });
-            }),
+          decoration: InputDecoration(labelText: "\$ 20"),
+          controller: eVeinte,
+          keyboardType: TextInputType.number,
+          inputFormatters: <TextInputFormatter>[
+            FilteringTextInputFormatter.digitsOnly,
+          ],
+          onChanged: (String value) {
+            setState(() {
+              recalcularEfectivo();
+            });
+          },
+        ),
         TextFormField(
-            decoration: InputDecoration(labelText: "\$ 10"),
-            controller: eDiez,
-            keyboardType: TextInputType.number,
-            inputFormatters: <TextInputFormatter>[
-              FilteringTextInputFormatter.digitsOnly
-            ],
-            onChanged: (String value) {
-              setState(() {
-                recalcularEfectivo();
-              });
-            }),
+          decoration: InputDecoration(labelText: "\$ 10"),
+          controller: eDiez,
+          keyboardType: TextInputType.number,
+          inputFormatters: <TextInputFormatter>[
+            FilteringTextInputFormatter.digitsOnly,
+          ],
+          onChanged: (String value) {
+            setState(() {
+              recalcularEfectivo();
+            });
+          },
+        ),
       ],
     );
   }
@@ -411,26 +447,29 @@ class _CollectScreenState extends State<CollectScreen> {
         ),
         Expanded(
           child: TextFormField(
-              decoration: InputDecoration(labelText: "importe"),
-              controller: importe,
-              keyboardType:
-                  TextInputType.numberWithOptions(decimal: true, signed: false),
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),
-                TextInputFormatter.withFunction((oldValue, newValue) {
-                  try {
-                    final text = newValue.text;
-                    if (text.isNotEmpty) double.parse(text);
-                    return newValue;
-                  } catch (e) {}
-                  return oldValue;
-                }),
-              ],
-              onChanged: (String value) {
-                setState(() {
-                  recalculareCheque();
-                });
+            decoration: InputDecoration(labelText: "importe"),
+            controller: importe,
+            keyboardType: TextInputType.numberWithOptions(
+              decimal: true,
+              signed: false,
+            ),
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),
+              TextInputFormatter.withFunction((oldValue, newValue) {
+                try {
+                  final text = newValue.text;
+                  if (text.isNotEmpty) double.parse(text);
+                  return newValue;
+                } catch (e) {}
+                return oldValue;
               }),
+            ],
+            onChanged: (String value) {
+              setState(() {
+                recalculareCheque();
+              });
+            },
+          ),
         ),
       ],
     );
@@ -440,32 +479,35 @@ class _CollectScreenState extends State<CollectScreen> {
     if (iRecibido.text.isNotEmpty && iRecibido.text != '0') {
       tEfectivo.text = iRecibido.text;
     } else {
-      tEfectivo
-          .text = (int.parse(eveinteMil.text.isEmpty ? '0' : eveinteMil.text) *
-                  20000 +
-              int.parse(ediezMil.text.isEmpty ? '0' : ediezMil.text) * 10000 +
-              int.parse(edosMil.text.isEmpty ? '0' : edosMil.text) * 2000 +
-              int.parse(eMil.text.isEmpty ? '0' : eMil.text) * 1000 +
-              int.parse(eQuinientos.text.isEmpty ? '0' : eQuinientos.text) *
-                  500 +
-              int.parse(eDocientos.text.isEmpty ? '0' : eDocientos.text) * 200 +
-              int.parse(eCien.text.isEmpty ? '0' : eCien.text) * 100 +
-              int.parse(eCincuenta.text.isEmpty ? '0' : eCincuenta.text) * 50 +
-              int.parse(eVeinte.text.isEmpty ? '0' : eVeinte.text) * 20 +
-              int.parse(eDiez.text.isEmpty ? '0' : eDiez.text) * 10)
-          .toString();
+      tEfectivo.text =
+          (int.parse(eveinteMil.text.isEmpty ? '0' : eveinteMil.text) * 20000 +
+                  int.parse(ediezMil.text.isEmpty ? '0' : ediezMil.text) *
+                      10000 +
+                  int.parse(edosMil.text.isEmpty ? '0' : edosMil.text) * 2000 +
+                  int.parse(eMil.text.isEmpty ? '0' : eMil.text) * 1000 +
+                  int.parse(eQuinientos.text.isEmpty ? '0' : eQuinientos.text) *
+                      500 +
+                  int.parse(eDocientos.text.isEmpty ? '0' : eDocientos.text) *
+                      200 +
+                  int.parse(eCien.text.isEmpty ? '0' : eCien.text) * 100 +
+                  int.parse(eCincuenta.text.isEmpty ? '0' : eCincuenta.text) *
+                      50 +
+                  int.parse(eVeinte.text.isEmpty ? '0' : eVeinte.text) * 20 +
+                  int.parse(eDiez.text.isEmpty ? '0' : eDiez.text) * 10)
+              .toString();
     }
     recalcularTotal();
   }
 
   void recalculareCheque() {
-    tCheque.text = (double.parse(importe1.text.isEmpty ? '0' : importe1.text) +
-            double.parse(importe2.text.isEmpty ? '0' : importe2.text) +
-            double.parse(importe3.text.isEmpty ? '0' : importe3.text) +
-            double.parse(importe4.text.isEmpty ? '0' : importe4.text) +
-            double.parse(importe5.text.isEmpty ? '0' : importe5.text) +
-            double.parse(importe6.text.isEmpty ? '0' : importe6.text))
-        .toString();
+    tCheque.text =
+        (double.parse(importe1.text.isEmpty ? '0' : importe1.text) +
+                double.parse(importe2.text.isEmpty ? '0' : importe2.text) +
+                double.parse(importe3.text.isEmpty ? '0' : importe3.text) +
+                double.parse(importe4.text.isEmpty ? '0' : importe4.text) +
+                double.parse(importe5.text.isEmpty ? '0' : importe5.text) +
+                double.parse(importe6.text.isEmpty ? '0' : importe6.text))
+            .toString();
     recalcularTotal();
   }
 
@@ -476,11 +518,11 @@ class _CollectScreenState extends State<CollectScreen> {
             .toString();
   }
 
-  String validateName(String? value) {
-    if (value != null && value.length == 0 || value == '0') {
+  String? validateName(String? value) {
+    if (value == null || value.isEmpty || value == '0') {
       return "El Campo es requerido";
     }
-    return '';
+    return null;
   }
 
   save() {
@@ -489,6 +531,7 @@ class _CollectScreenState extends State<CollectScreen> {
     final product = Provider.of<Products>(context, listen: false);
     final listNum = _numFactura.split("|");
     String numeroFact = listNum[0];
+    print(keyForm.currentState);
     if (keyForm.currentState!.validate() && numeroFact != '') {
       if (iRecibido.text.isNotEmpty && iRecibido.text != '0') {
         eveinteMil.text = '0';
@@ -503,38 +546,39 @@ class _CollectScreenState extends State<CollectScreen> {
         eDiez.text = '0';
       }
       Provider.of<Cobros>(context, listen: false).addCobro(
-          customer.customerActive!.id,
-          numeroFact,
-          eveinteMil.text,
-          ediezMil.text,
-          edosMil.text,
-          eMil.text,
-          eQuinientos.text,
-          eDocientos.text,
-          eCien.text,
-          eCincuenta.text,
-          eVeinte.text,
-          eDiez.text,
-          numero1.text,
-          importe1.text,
-          numero2.text,
-          importe2.text,
-          numero3.text,
-          importe3.text,
-          numero4.text,
-          importe4.text,
-          numero5.text,
-          importe5.text,
-          numero6.text,
-          importe6.text,
-          comentario.text,
-          iDolar.text,
-          iRecibido.text,
-          tEfectivo.text,
-          tCheque.text,
-          tRecibido.text,
-          ((auth.operation == 'ruta') ? auth.IdRuta : ''),
-          notControl);
+        customer.customerActive!.id,
+        numeroFact,
+        eveinteMil.text,
+        ediezMil.text,
+        edosMil.text,
+        eMil.text,
+        eQuinientos.text,
+        eDocientos.text,
+        eCien.text,
+        eCincuenta.text,
+        eVeinte.text,
+        eDiez.text,
+        numero1.text,
+        importe1.text,
+        numero2.text,
+        importe2.text,
+        numero3.text,
+        importe3.text,
+        numero4.text,
+        importe4.text,
+        numero5.text,
+        importe5.text,
+        numero6.text,
+        importe6.text,
+        comentario.text,
+        iDolar.text,
+        iRecibido.text,
+        tEfectivo.text,
+        tCheque.text,
+        tRecibido.text,
+        ((auth.operation == 'ruta') ? auth.IdRuta : ''),
+        notControl,
+      );
       setState(() {});
       Alert(
         context: context,
@@ -553,7 +597,7 @@ class _CollectScreenState extends State<CollectScreen> {
               Navigator.of(context).pushReplacementNamed('/');
             },
             width: 120,
-          )
+          ),
         ],
       ).show();
     }
